@@ -31,6 +31,31 @@ class UserProgress extends Model
     }
 
     /**
+     * Find or lazily create the progress row for a user. Explicitly passes
+     * the default values rather than relying on `firstOrCreate()`'s single-array
+     * form — that form omits unset columns from the INSERT and leaves them as
+     * database-level defaults, which Eloquent never hydrates back onto the
+     * in-memory model, so a freshly created row would read as null attributes
+     * here even though the database has 0/1.
+     */
+    public static function forUser(User $user): self
+    {
+        /** @var self $progress */
+        $progress = self::query()->firstOrCreate(
+            ['user_id' => $user->id],
+            [
+                'xp' => 0,
+                'level' => 1,
+                'current_streak_days' => 0,
+                'longest_streak_days' => 0,
+                'co2_offset_kg' => 0,
+            ],
+        );
+
+        return $progress;
+    }
+
+    /**
      * @return array<string, string>
      */
     protected function casts(): array

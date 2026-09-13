@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Storage;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['species_id', 'nickname', 'location', 'planted_at'])]
+#[Fillable(['species_id', 'nickname', 'location', 'planted_at', 'last_watered_at', 'status', 'photo_path'])]
 class Plant extends Model
 {
     /** @use HasFactory<PlantFactory> */

@@ -1,8 +1,29 @@
-import { Head, Link } from '@inertiajs/react';
-import { ArrowLeft, Droplet, Leaf, Sprout, Sun } from 'lucide-react';
+import { Head, Link, router } from '@inertiajs/react';
+import {
+    ArrowLeft,
+    Camera,
+    Droplet,
+    Eye,
+    Leaf,
+    Scissors,
+    Sprout,
+    Sun,
+} from 'lucide-react';
+import { useState } from 'react';
+import { store as storeCareLog } from '@/actions/App/Http/Controllers/CareLogController';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Spinner } from '@/components/ui/spinner';
 import { dashboard } from '@/routes';
+import { create as diagnosisCreate } from '@/routes/diagnoses';
+
+const quickActions = [
+    { action: 'watered', label: 'Watered', icon: Droplet },
+    { action: 'fertilized', label: 'Fertilized', icon: Leaf },
+    { action: 'pruned', label: 'Pruned', icon: Scissors },
+    { action: 'inspected', label: 'Inspected', icon: Eye },
+] as const;
 
 type Plant = {
     id: number;
@@ -48,6 +69,19 @@ export default function PlantShow({
     careLogs: CareLogEntry[];
 }) {
     const title = plant.nickname || plant.species.name;
+    const [loggingAction, setLoggingAction] = useState<string | null>(null);
+
+    function logCare(action: string) {
+        setLoggingAction(action);
+        router.post(
+            storeCareLog.url({ plant: plant.id }),
+            { action },
+            {
+                preserveScroll: true,
+                onFinish: () => setLoggingAction(null),
+            },
+        );
+    }
 
     return (
         <>
@@ -71,15 +105,27 @@ export default function PlantShow({
                                 {plant.species.scientific_name}
                             </p>
                         </div>
-                        <Badge
-                            variant={
-                                plant.status === 'healthy'
-                                    ? 'secondary'
-                                    : 'default'
-                            }
-                        >
-                            {statusLabel[plant.status] ?? plant.status}
-                        </Badge>
+                        <div className="flex items-center gap-2">
+                            <Badge
+                                variant={
+                                    plant.status === 'healthy'
+                                        ? 'secondary'
+                                        : 'default'
+                                }
+                            >
+                                {statusLabel[plant.status] ?? plant.status}
+                            </Badge>
+                            <Button variant="outline" size="sm" asChild>
+                                <Link
+                                    href={diagnosisCreate({
+                                        query: { plant_id: plant.id },
+                                    })}
+                                >
+                                    <Camera />
+                                    Diagnose
+                                </Link>
+                            </Button>
+                        </div>
                     </div>
                 </div>
 
@@ -138,6 +184,27 @@ export default function PlantShow({
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </Card>
+
+                <Card className="gap-3 p-5">
+                    <h2 className="text-sm font-semibold">Log today's care</h2>
+                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                        {quickActions.map((option) => (
+                            <Button
+                                key={option.action}
+                                variant="outline"
+                                disabled={loggingAction !== null}
+                                onClick={() => logCare(option.action)}
+                            >
+                                {loggingAction === option.action ? (
+                                    <Spinner />
+                                ) : (
+                                    <option.icon />
+                                )}
+                                {option.label}
+                            </Button>
+                        ))}
                     </div>
                 </Card>
 

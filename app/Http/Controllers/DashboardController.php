@@ -32,8 +32,7 @@ class DashboardController extends Controller
                 'photo_url' => $plant->photo_url,
             ]);
 
-        /** @var UserProgress $progress */
-        $progress = UserProgress::query()->firstOrCreate(['user_id' => $user->id]);
+        $progress = UserProgress::forUser($user);
 
         return Inertia::render('dashboard', [
             'plants' => $plants,

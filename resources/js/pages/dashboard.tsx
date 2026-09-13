@@ -1,9 +1,12 @@
-import { Head } from '@inertiajs/react';
-import { Sprout } from 'lucide-react';
+import { Head, Link } from '@inertiajs/react';
+import { Camera, Sparkles, Sprout } from 'lucide-react';
+import QuizController from '@/actions/App/Http/Controllers/Onboarding/QuizController';
 import { AddPlantDialog } from '@/components/add-plant-dialog';
 import { GamificationSummary } from '@/components/gamification-summary';
 import { PlantCard } from '@/components/plant-card';
+import { Button } from '@/components/ui/button';
 import { dashboard } from '@/routes';
+import { create as diagnosisCreate } from '@/routes/diagnoses';
 
 type PlantSummary = {
     id: number;
@@ -55,7 +58,21 @@ export default function Dashboard({
                             </p>
                         )}
                     </div>
-                    <AddPlantDialog species={species} />
+                    <div className="flex items-center gap-2">
+                        <Button variant="outline" asChild>
+                            <Link href={diagnosisCreate()}>
+                                <Camera />
+                                Diagnose
+                            </Link>
+                        </Button>
+                        <Button asChild>
+                            <Link href={QuizController.show()}>
+                                <Sparkles />
+                                Find a Plant
+                            </Link>
+                        </Button>
+                        <AddPlantDialog species={species} />
+                    </div>
                 </div>
 
                 <GamificationSummary progress={progress} />
@@ -67,9 +84,16 @@ export default function Dashboard({
                         <div className="border-sidebar-border/70 dark:border-sidebar-border flex flex-col items-center gap-3 rounded-xl border border-dashed p-10 text-center">
                             <Sprout className="text-muted-foreground size-8" />
                             <p className="text-muted-foreground text-sm">
-                                Your garden is empty. Add your first plant to
-                                get started.
+                                Your garden is empty. Answer a few quick
+                                questions and we'll recommend a plant suited to
+                                your spot.
                             </p>
+                            <Button asChild>
+                                <Link href={QuizController.show()}>
+                                    <Sparkles />
+                                    Find a Plant
+                                </Link>
+                            </Button>
                         </div>
                     ) : (
                         <div className="grid gap-3 md:grid-cols-2">

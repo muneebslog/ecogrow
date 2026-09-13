@@ -42,6 +42,24 @@ class GamificationService
     ];
 
     /**
+     * @var array<int, string>
+     */
+    private const LEVEL_NAMES = [
+        1 => 'Seedling',
+        2 => 'Sprout Grower',
+        3 => 'Root Keeper',
+        4 => 'Garden Tender',
+        5 => 'Green Thumb',
+        6 => 'Master Planter',
+        7 => 'Grove Keeper',
+    ];
+
+    public function levelName(int $level): string
+    {
+        return self::LEVEL_NAMES[$level] ?? "Level {$level}";
+    }
+
+    /**
      * @return Collection<int, Badge>
      */
     public function recordPlantAdded(User $user, Plant $plant): Collection
@@ -77,12 +95,23 @@ class GamificationService
         return $this->checkBadges($user, $progress);
     }
 
+    /**
+     * The XP floor for the given level and the XP needed to reach the next
+     * one (null when already at the top level) — for rendering a progress bar.
+     *
+     * @return array{floor: int, ceiling: int|null}
+     */
+    public function levelThresholds(int $level): array
+    {
+        return [
+            'floor' => self::LEVEL_THRESHOLDS[$level - 1] ?? 0,
+            'ceiling' => self::LEVEL_THRESHOLDS[$level] ?? null,
+        ];
+    }
+
     private function progressFor(User $user): UserProgress
     {
-        /** @var UserProgress $progress */
-        $progress = UserProgress::query()->firstOrCreate(['user_id' => $user->id]);
-
-        return $progress;
+        return UserProgress::forUser($user);
     }
 
     private function addXp(UserProgress $progress, int $amount): void

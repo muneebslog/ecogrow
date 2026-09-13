@@ -34,9 +34,9 @@ export function AddPlantDialog({ species }: { species: SpeciesOption[] }) {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button>
+                <Button variant="outline">
                     <Plus />
-                    Add Plant
+                    Quick Add
                 </Button>
             </DialogTrigger>
             <DialogContent>
