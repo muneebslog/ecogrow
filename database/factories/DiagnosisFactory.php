@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
+ * Deterministic test fixture data — no Faker.
+ *
  * @extends Factory<Diagnosis>
  */
 class DiagnosisFactory extends Factory
@@ -23,12 +25,12 @@ class DiagnosisFactory extends Factory
             'user_id' => User::factory(),
             'photo_path' => 'diagnoses/example.jpg',
             'predicted_species_id' => null,
-            'confidence' => fake()->numberBetween(60, 99),
-            'health_status' => fake()->randomElement(['healthy', 'stressed', 'diseased', 'pest', 'unknown']),
+            'confidence' => 90,
+            'health_status' => 'healthy',
             'findings' => [
-                ['label' => 'Leaf discoloration', 'confidence' => fake()->numberBetween(50, 95), 'description' => fake()->sentence()],
+                ['label' => 'Leaf discoloration', 'confidence' => 80, 'description' => 'Test fixture finding.'],
             ],
-            'recommendation' => fake()->sentence(),
+            'recommendation' => 'Test fixture recommendation.',
             'raw_response' => null,
         ];
     }

@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
+ * Deterministic test fixture data — no Faker.
+ *
  * @extends Factory<CareLog>
  */
 class CareLogFactory extends Factory
@@ -22,9 +24,9 @@ class CareLogFactory extends Factory
         return [
             'plant_id' => Plant::factory(),
             'user_id' => User::factory(),
-            'action' => fake()->randomElement(['watered', 'fertilized', 'pruned', 'inspected', 'other']),
-            'notes' => fake()->optional()->sentence(),
-            'logged_at' => fake()->dateTimeBetween('-1 month', 'now'),
+            'action' => 'watered',
+            'notes' => null,
+            'logged_at' => now(),
         ];
     }
 }

@@ -4,13 +4,27 @@ namespace Database\Factories;
 
 use App\Models\Species;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
+ * Deterministic test fixture data — no Faker. Real seeded species data
+ * lives in database/seeders/SpeciesSeeder.php; this factory only exists to
+ * generate throwaway rows for the automated test suite.
+ *
  * @extends Factory<Species>
  */
 class SpeciesFactory extends Factory
 {
+    private static int $sequence = 0;
+
+    /**
+     * @var array<int, array{category: string, sunlight: string, difficulty: string}>
+     */
+    private const VARIANTS = [
+        ['category' => 'tree', 'sunlight' => 'full_sun', 'difficulty' => 'easy'],
+        ['category' => 'shrub', 'sunlight' => 'partial_shade', 'difficulty' => 'moderate'],
+        ['category' => 'plant', 'sunlight' => 'low_light', 'difficulty' => 'easy'],
+    ];
+
     /**
      * Define the model's default state.
      *
@@ -18,20 +32,22 @@ class SpeciesFactory extends Factory
      */
     public function definition(): array
     {
-        $name = fake()->unique()->words(2, true);
+        $index = ++self::$sequence;
+        $variant = self::VARIANTS[$index % count(self::VARIANTS)];
+        $name = "Test Species {$index}";
 
         return [
-            'name' => Str::title($name),
-            'scientific_name' => fake()->words(2, true),
-            'slug' => Str::slug($name),
-            'category' => fake()->randomElement(['tree', 'shrub', 'plant']),
-            'description' => fake()->sentence(),
+            'name' => $name,
+            'scientific_name' => "Testus speciesus {$index}",
+            'slug' => "test-species-{$index}",
+            'category' => $variant['category'],
+            'description' => 'A test fixture species used only by the automated test suite.',
             'image_path' => null,
-            'sunlight' => fake()->randomElement(['full_sun', 'partial_shade', 'low_light']),
-            'water_frequency_days' => fake()->numberBetween(1, 7),
-            'native_region' => fake()->country(),
-            'co2_offset_kg_per_year' => fake()->randomFloat(2, 1, 25),
-            'care_difficulty' => fake()->randomElement(['easy', 'moderate', 'difficult']),
+            'sunlight' => $variant['sunlight'],
+            'water_frequency_days' => 3 + ($index % 5),
+            'native_region' => 'Test Region',
+            'co2_offset_kg_per_year' => 5.00,
+            'care_difficulty' => $variant['difficulty'],
         ];
     }
 }
