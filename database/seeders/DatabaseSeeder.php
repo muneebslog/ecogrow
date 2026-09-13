@@ -17,10 +17,16 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Idempotent: db:seed must be safe to re-run against a database that
+        // already has this user (a prior seed run, or someone having
+        // registered with this email for real) without crashing on the
+        // unique email constraint.
+        if (! User::query()->where('email', 'test@example.com')->exists()) {
+            User::factory()->create([
+                'name' => 'Test User',
+                'email' => 'test@example.com',
+            ]);
+        }
 
         $this->call([
             SpeciesSeeder::class,
