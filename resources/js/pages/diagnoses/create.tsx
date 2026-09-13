@@ -1,4 +1,4 @@
-import { Form, Head } from '@inertiajs/react';
+import { Form, Head, Link } from '@inertiajs/react';
 import { Camera, Sparkles, X } from 'lucide-react';
 import { useRef, useState } from 'react';
 import DiagnosisController from '@/actions/App/Http/Controllers/DiagnosisController';
@@ -13,6 +13,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinner';
+import { dashboard } from '@/routes';
 
 type PlantOption = { id: number; name: string };
 
@@ -48,6 +49,15 @@ export default function DiagnosesCreate({
         <>
             <Head title="Snap Diagnosis" />
             <div className="mx-auto max-w-lg p-6">
+                <div className="mb-4 flex items-center justify-end">
+                    <Link
+                        href={dashboard()}
+                        className="text-muted-foreground hover:text-foreground flex size-8 items-center justify-center rounded-full"
+                    >
+                        <X className="size-5" />
+                    </Link>
+                </div>
+
                 <h1 className="text-xl font-semibold tracking-tight">
                     Snap Diagnosis
                 </h1>

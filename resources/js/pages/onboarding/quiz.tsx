@@ -1,10 +1,11 @@
-import { Head, useForm } from '@inertiajs/react';
-import { Home, Sprout, Sun, TreePine } from 'lucide-react';
+import { Head, Link, useForm } from '@inertiajs/react';
+import { Home, Sprout, Sun, TreePine, X } from 'lucide-react';
 import { useState } from 'react';
 import QuizController from '@/actions/App/Http/Controllers/Onboarding/QuizController';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { cn } from '@/lib/utils';
+import { dashboard } from '@/routes';
 
 const sunlightOptions = [
     {
@@ -55,6 +56,15 @@ export default function Quiz() {
         <>
             <Head title="Find a Plant" />
             <div className="mx-auto flex min-h-screen max-w-lg flex-col p-6">
+                <div className="mb-6 flex items-center justify-end">
+                    <Link
+                        href={dashboard()}
+                        className="text-muted-foreground hover:text-foreground flex size-8 items-center justify-center rounded-full"
+                    >
+                        <X className="size-5" />
+                    </Link>
+                </div>
+
                 <div className="mb-8 flex gap-2">
                     <span
                         className={cn(

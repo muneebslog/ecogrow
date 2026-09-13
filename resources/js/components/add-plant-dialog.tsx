@@ -32,7 +32,10 @@ export function AddPlantDialog({ species }: { species: SpeciesOption[] }) {
     const [open, setOpen] = useState(false);
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
+        // modal={false} works around a known Radix issue where a Select's
+        // popover, portalled to document.body, gets caught by Dialog's
+        // focus-trap/pointer-lock and never opens when nested inside it.
+        <Dialog open={open} onOpenChange={setOpen} modal={false}>
             <DialogTrigger asChild>
                 <Button variant="outline">
                     <Plus />

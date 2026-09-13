@@ -1,6 +1,7 @@
-import { Form, Head } from '@inertiajs/react';
-import { CheckCircle2, Leaf, MapPin } from 'lucide-react';
+import { Form, Head, Link } from '@inertiajs/react';
+import { ArrowLeft, CheckCircle2, Leaf, MapPin } from 'lucide-react';
 import { useState } from 'react';
+import QuizController from '@/actions/App/Http/Controllers/Onboarding/QuizController';
 import PlantController from '@/actions/App/Http/Controllers/PlantController';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -45,6 +46,14 @@ export default function Recommendations({
         <>
             <Head title="Recommended for you" />
             <div className="mx-auto max-w-lg p-6">
+                <Link
+                    href={QuizController.show()}
+                    className="text-muted-foreground hover:text-foreground mb-3 inline-flex items-center gap-1 text-sm"
+                >
+                    <ArrowLeft className="size-4" />
+                    Back
+                </Link>
+
                 <h1 className="text-2xl font-semibold tracking-tight">
                     Recommended for you
                 </h1>

@@ -4,12 +4,14 @@ import {
     ArrowRight,
     CheckCircle2,
     Sparkles,
+    X,
 } from 'lucide-react';
 import { show as plantShow } from '@/routes/plants';
 import { create as diagnosisCreate } from '@/routes/diagnoses';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { dashboard } from '@/routes';
 
 type Finding = { label: string; confidence: number; description: string };
 
@@ -38,6 +40,15 @@ export default function DiagnosesShow({ diagnosis }: { diagnosis: Diagnosis }) {
         <>
             <Head title="Diagnosis Result" />
             <div className="mx-auto max-w-lg p-6">
+                <div className="mb-4 flex items-center justify-end">
+                    <Link
+                        href={dashboard()}
+                        className="text-muted-foreground hover:text-foreground flex size-8 items-center justify-center rounded-full"
+                    >
+                        <X className="size-5" />
+                    </Link>
+                </div>
+
                 {diagnosis.photo_url && (
                     <img
                         src={diagnosis.photo_url}
