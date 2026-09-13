@@ -81,6 +81,9 @@ class PlantIdDiagnosisService implements PlantDiagnosisService
         $confidence = isset($topSuggestion['probability'])
             ? (int) round($topSuggestion['probability'] * 100)
             : null;
+        $isPlantConfidence = isset($result['is_plant']['probability'])
+            ? (int) round($result['is_plant']['probability'] * 100)
+            : null;
 
         $isHealthy = $result['is_healthy']['binary'] ?? null;
         $diseaseSuggestions = $result['disease']['suggestions'] ?? [];
@@ -118,6 +121,7 @@ class PlantIdDiagnosisService implements PlantDiagnosisService
             speciesName: $speciesName,
             scientificName: $scientificName,
             confidence: $confidence,
+            isPlantConfidence: $isPlantConfidence,
             healthStatus: $healthStatus,
             findings: $findings,
             recommendation: $recommendation,

@@ -15,6 +15,7 @@ final readonly class DiagnosisResult
         public ?string $speciesName,
         public ?string $scientificName,
         public ?int $confidence,
+        public ?int $isPlantConfidence,
         public string $healthStatus,
         public array $findings,
         public ?string $recommendation,

@@ -58,7 +58,7 @@ class PlantController extends Controller
                 'location' => $plant->location,
                 'status' => $plant->status,
                 'photo_url' => $plant->photo_url,
-                'planted_at' => $plant->planted_at?->diffForHumans(),
+                'planted_at' => $plant->planted_at?->format('M j, Y'),
                 'last_watered_at' => $plant->last_watered_at?->diffForHumans(),
                 'species' => [
                     'name' => $plant->species->name,

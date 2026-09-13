@@ -17,7 +17,10 @@ use Illuminate\Support\Facades\Storage;
  * @property int $user_id
  * @property string $photo_path
  * @property int|null $predicted_species_id
+ * @property string|null $predicted_species_name
+ * @property string|null $predicted_scientific_name
  * @property int|null $confidence
+ * @property int|null $is_plant_confidence
  * @property string|null $health_status
  * @property array<int, array{label: string, confidence: int, description: string}>|null $findings
  * @property string|null $recommendation
@@ -30,7 +33,10 @@ use Illuminate\Support\Facades\Storage;
     'user_id',
     'photo_path',
     'predicted_species_id',
+    'predicted_species_name',
+    'predicted_scientific_name',
     'confidence',
+    'is_plant_confidence',
     'health_status',
     'findings',
     'recommendation',

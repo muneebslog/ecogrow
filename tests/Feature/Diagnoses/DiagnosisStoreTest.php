@@ -56,7 +56,10 @@ test('uploading a photo creates a diagnosis from the real Plant.id response shap
 
     $response->assertRedirect(route('diagnoses.show', $diagnosis));
     expect($diagnosis)->not->toBeNull();
+    expect($diagnosis->predicted_species_name)->toBe('Holy Basil');
+    expect($diagnosis->predicted_scientific_name)->toBe('Ocimum tenuiflorum');
     expect($diagnosis->confidence)->toBe(91);
+    expect($diagnosis->is_plant_confidence)->toBe(98);
     expect($diagnosis->health_status)->toBe('pest');
     expect($diagnosis->recommendation)->toBe('Apply neem oil every 3 days.');
     Storage::disk('public')->assertExists($diagnosis->photo_path);
